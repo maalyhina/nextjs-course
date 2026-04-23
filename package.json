@@ -2,12 +2,12 @@
   "name": "cinemax",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "postinstall": "prisma generate"
+},
   "dependencies": {
     "@babel/runtime": "^7.29.2",
     "@prisma/adapter-pg": "^7.8.0",

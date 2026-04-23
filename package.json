@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@babel/runtime": "^7.29.2",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^3.0.3",

@@ -28,10 +28,7 @@ function ContentCard({ item }: { item: any }) {
         transition: "transform 0.2s",
         flexShrink: 0,
         width: "180px",
-      }}
-        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
-        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
-      >
+      }}>
         <img
           src={item.poster || "/no-image.jpg"}
           alt={item.title}

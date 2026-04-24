@@ -191,7 +191,7 @@ export default async function ContentPage({
           </div>
         </div>
 
-        <div style={{ paddingTop: "4px", fontSize: "14px", lineHeight: 1.8" }}>
+        <div style={{ paddingTop: "4px", fontSize: "14px", lineHeight: 1.8}}>
           {[
             { label: "Рік", value: content.year },
             content.country ? { label: "Країна", value: content.country } : null,
@@ -229,10 +229,7 @@ export default async function ContentPage({
           <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingLeft: "4rem", paddingRight: "4rem", scrollbarWidth: "none" }}>
             {similar.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-                <div style={{ width: "160px" }}
-                  onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
-                  onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
-                >
+                <div style={{ width: "160px" }}>
                   <img
                     src={item.poster || "/no-image.jpg"}
                     alt={item.title}

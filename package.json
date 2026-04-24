@@ -12,6 +12,7 @@
     "@babel/runtime": "^7.29.2",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^5.22.0",
+    "@uploadthing/react": "^7.3.3",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "next": "16.2.4",
@@ -19,7 +20,8 @@
     "pg": "^8.20.0",
     "prisma": "^5.22.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "uploadthing": "^7.7.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

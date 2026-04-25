@@ -110,8 +110,17 @@ export default async function AdminPage() {
                 <Link href={`/admin/content/${item.id}`} style={{ color: "#E50914", textDecoration: "none", fontSize: "13px" }}>
                   Редагувати
                 </Link>
+                {(item.type === "SERIES" || item.type === "ANIME") && (
+                  <Link href={`/admin/content/${item.id}/seasons`} style={{
+                    color: "#fff", textDecoration: "none", fontSize: "13px",
+                    background: "#1a1a6e", padding: "4px 12px", borderRadius: "4px",
+                  }}>
+                    Сезони
+                  </Link>
+                )}
               </div>
             ))}
+
           </div>
 
           {/* Recent users */}
@@ -143,20 +152,21 @@ export default async function AdminPage() {
         {/* Navigation */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
           {[
-  { label: "Управління контентом", href: "/admin/content", desc: "Додати, редагувати, видалити фільми та серіали" },
-  { label: "Управління користувачами", href: "/admin/users", desc: "Переглянути та керувати акаунтами" },
-  { label: "Жанри", href: "/admin/genres", desc: "Управління жанрами контенту" },
-].map(item => (
-  <Link key={item.href} href={item.href} style={{ textDecoration: "none" }}>
-    <div style={{
-      background: "#1f1f1f", borderRadius: "8px", padding: "24px",
-      border: "1px solid rgba(255,255,255,0.07)",
-    }}>
-      <div style={{ color: "#fff", fontWeight: 700, fontSize: "16px", marginBottom: "8px" }}>{item.label}</div>
-      <div style={{ color: "#777", fontSize: "13px" }}>{item.desc}</div>
-    </div>
-  </Link>
-))}
+            { label: "Управління контентом", href: "/admin/content", desc: "Додати, редагувати, видалити фільми та серіали" },
+            { label: "Управління користувачами", href: "/admin/users", desc: "Переглянути та керувати акаунтами" },
+            { label: "Жанри", href: "/admin/genres", desc: "Управління жанрами контенту" },
+            { label: "Актори", href: "/admin/actors", desc: "Управління акторами" },
+          ].map(item => (
+            <Link key={item.href} href={item.href} style={{ textDecoration: "none" }}>
+              <div style={{
+                background: "#1f1f1f", borderRadius: "8px", padding: "24px",
+                border: "1px solid rgba(255,255,255,0.07)",
+              }}>
+                <div style={{ color: "#fff", fontWeight: 700, fontSize: "16px", marginBottom: "8px" }}>{item.label}</div>
+                <div style={{ color: "#777", fontSize: "13px" }}>{item.desc}</div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

@@ -147,12 +147,6 @@ export default async function Home() {
         <div style={{ height: "85vh", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "16px" }}>
           <h1 style={{ color: "#fff", fontSize: "32px", fontWeight: 900 }}>CINEMAX</h1>
           <p style={{ color: "#bcbcbc", fontSize: "16px" }}>Контент ще не додано</p>
-          <Link href="/admin" style={{
-            background: "#E50914", color: "#fff", padding: "10px 24px",
-            borderRadius: "4px", fontWeight: 700, textDecoration: "none",
-          }}>
-            Додати контент в адмін панелі
-          </Link>
         </div>
       )}
 

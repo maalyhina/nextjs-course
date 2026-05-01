@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
-import Header from "@/components/Header";
+import Header from "@/app/components/Header";
 
 export const metadata: Metadata = {
   title: "Cinemax",

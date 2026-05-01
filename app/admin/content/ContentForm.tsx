@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { UploadButton, UploadDropzone } from "@/components/UploadButton";
+import { UploadButton, UploadDropzone } from "@/app/components/UploadButton";
 
 interface Props {
   initial?: any;

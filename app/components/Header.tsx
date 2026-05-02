@@ -106,9 +106,15 @@ export default function Header() {
                 background: "#1f1f1f", border: "1px solid #333",
                 borderRadius: "4px", minWidth: "160px", zIndex: 100,
               }}>
-                <Link href="/history" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                {(session.user as any)?.role === "USER" && (
+                  <Link href="/history" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                    onClick={() => setMenuOpen(false)}>
+                    Історія
+                  </Link>
+                )}
+                <Link href="/profile" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
                   onClick={() => setMenuOpen(false)}>
-                  Історія
+                  Профіль
                 </Link>
                 {(session.user as any)?.role === "ADMIN" && (
                   <Link href="/admin" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}

@@ -33,7 +33,6 @@ export default function EpisodePlayer({ seasons }: { seasons: Season[] }) {
             <video
               key={activeEpisode.id}
               controls
-              autoPlay
               style={{ width: "100%", maxHeight: "500px", display: "block" }}
               src={activeEpisode.videoUrl}
             />

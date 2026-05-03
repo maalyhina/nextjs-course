@@ -155,23 +155,6 @@ export default async function ContentPage({
             </div>
           )}
 
-          {/* Trailer */}
-          {content.trailerUrl && (
-            <div style={{ marginBottom: "40px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px" }}>Трейлер</h2>
-              <div style={{ borderRadius: "6px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)" }}>
-                <iframe
-                  width="100%"
-                  height="380"
-                  src={content.trailerUrl.replace("watch?v=", "embed/")}
-                  title="Trailer"
-                  allowFullScreen
-                  style={{ display: "block" }}
-                />
-              </div>
-            </div>
-          )}
-
           {/* Episodes with player */}
           {isSeries && content.seasons.length > 0 && (
             <div id="episodes" style={{ marginBottom: "40px" }}>

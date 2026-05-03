@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { title, description, poster, backdrop, trailerUrl, videoUrl, type, year, duration, country, genreIds } = await req.json();
+  const { title, description, poster, backdrop, trailerUrl, videoUrl, type, year, duration, country, genreIds, actorIds, seasons } = await req.json();
 
   const content = await prisma.content.create({
     data: {
@@ -36,6 +36,26 @@ export async function POST(req: Request) {
       type, year, duration, country,
       genres: {
         create: genreIds?.map((id: string) => ({ genre: { connect: { id } } })) || [],
+      },
+      actors: {
+        create: actorIds?.map((a: any) => ({
+          actor: { connect: { id: a.actorId } },
+          role: a.role || null,
+        })) || [],
+      },
+      seasons: {
+        create: seasons?.map((s: any) => ({
+          number: Number(s.number),
+          title: s.title || null,
+          episodes: {
+            create: s.episodes?.map((ep: any) => ({
+              number: Number(ep.number),
+              title: ep.title,
+              videoUrl: ep.videoUrl || "",
+              duration: ep.duration ? Number(ep.duration) : null,
+            })) || [],
+          },
+        })) || [],
       },
     },
   });

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { UploadButton } from "@/app/components/UploadButton";
+import { UploadButton } from "@/components/UploadButton";
 
 export default function EpisodeForm({ seasonId, nextNumber }: { seasonId: string; nextNumber: number }) {
   const router = useRouter();

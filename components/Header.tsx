@@ -49,11 +49,10 @@ export default function Header() {
         {/* Навігація залежно від ролі */}
         <nav style={{ display: "flex", gap: "20px" }}>
           {isAdmin ? (
-            // Навігація для АДМІНА
             <>
               {[
                 { label: "Панель", href: "/admin" },
-                { label: "Фільми", href: "/admin/movies" },
+                { label: "Фільми", href: "/admin/content" },
                 { label: "Користувачі", href: "/admin/users" },
               ].map(({ label, href }) => (
                 <Link key={href} href={href} style={{
@@ -69,7 +68,6 @@ export default function Header() {
               ))}
             </>
           ) : (
-            // Навігація для звичайного USER
             <>
               {[
                 { label: "Фільми", href: "/movies?type=MOVIE" },
@@ -96,8 +94,6 @@ export default function Header() {
 
       {/* RIGHT */}
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-
-        {/* Пошук — тільки для USER, не для адміна */}
         {!isAdmin && (
           <form onSubmit={handleSearch} style={{ display: "flex", alignItems: "center" }}>
             <input
@@ -176,7 +172,6 @@ export default function Header() {
                   </>
                 )}
 
-                {/* Вийти — для всіх */}
                 <div style={{ borderTop: "1px solid #2a2a2a", marginTop: "4px" }}>
                   <button
                     onClick={() => { signOut(); setMenuOpen(false); }}

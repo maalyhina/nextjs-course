@@ -5,7 +5,9 @@ import { authOptions } from "@/lib/auth";
 const f = createUploadthing();
 
 export const ourFileRouter = {
-  videoUploader: f({ video: { maxFileSize: "512MB", maxFileCount: 1 } })
+  videoUploader: f({
+    video: { maxFileSize: "512MB", maxFileCount: 1 },
+  })
     .middleware(async () => {
       const session = await getServerSession(authOptions);
       if (!session || (session.user as any).role !== "ADMIN") {
@@ -13,12 +15,13 @@ export const ourFileRouter = {
       }
       return { userId: (session.user as any).id };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Video uploaded:", file.url);
-      return { url: file.url };
+    .onUploadComplete(async ({ file }) => {
+      return { url: file.ufsUrl };
     }),
 
-  imageUploader: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
+  imageUploader: f({
+    image: { maxFileSize: "8MB", maxFileCount: 1 },
+  })
     .middleware(async () => {
       const session = await getServerSession(authOptions);
       if (!session || (session.user as any).role !== "ADMIN") {
@@ -26,9 +29,8 @@ export const ourFileRouter = {
       }
       return { userId: (session.user as any).id };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Image uploaded:", file.url);
-      return { url: file.url };
+    .onUploadComplete(async ({ file }) => {
+      return { url: file.ufsUrl };
     }),
 } satisfies FileRouter;
 

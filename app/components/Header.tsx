@@ -12,6 +12,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
+  const isAdmin = (session?.user as any)?.role === "ADMIN";
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
@@ -44,59 +46,90 @@ export default function Header() {
           </span>
         </Link>
 
+        {/* Навігація залежно від ролі */}
         <nav style={{ display: "flex", gap: "20px" }}>
-          {[
-            { label: "Фільми", href: "/movies?type=MOVIE" },
-            { label: "Серіали", href: "/movies?type=SERIES" },
-            { label: "Аніме", href: "/movies?type=ANIME" },
-            { label: "Мультики", href: "/movies?type=CARTOON" },
-            { label: "Обране", href: "/favorites" },
-          ].map(({ label, href }) => (
-            <Link key={href} href={href} style={{
-              color: "#e5e5e5", textDecoration: "none",
-              fontSize: "14px", fontWeight: 500,
-              transition: "color 0.15s",
-            }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={e => (e.currentTarget.style.color = "#e5e5e5")}
-            >
-              {label}
-            </Link>
-          ))}
+          {isAdmin ? (
+            // Навігація для АДМІНА
+            <>
+              {[
+                { label: "Панель", href: "/admin" },
+                { label: "Фільми", href: "/admin/movies" },
+                { label: "Користувачі", href: "/admin/users" },
+              ].map(({ label, href }) => (
+                <Link key={href} href={href} style={{
+                  color: "#e5e5e5", textDecoration: "none",
+                  fontSize: "14px", fontWeight: 500,
+                  transition: "color 0.15s",
+                }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#e5e5e5")}
+                >
+                  {label}
+                </Link>
+              ))}
+            </>
+          ) : (
+            // Навігація для звичайного USER
+            <>
+              {[
+                { label: "Фільми", href: "/movies?type=MOVIE" },
+                { label: "Серіали", href: "/movies?type=SERIES" },
+                { label: "Аніме", href: "/movies?type=ANIME" },
+                { label: "Мультики", href: "/movies?type=CARTOON" },
+                { label: "Обране", href: "/favorites" },
+              ].map(({ label, href }) => (
+                <Link key={href} href={href} style={{
+                  color: "#e5e5e5", textDecoration: "none",
+                  fontSize: "14px", fontWeight: 500,
+                  transition: "color 0.15s",
+                }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#e5e5e5")}
+                >
+                  {label}
+                </Link>
+              ))}
+            </>
+          )}
         </nav>
       </div>
 
       {/* RIGHT */}
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-        {/* Search */}
-        <form onSubmit={handleSearch} style={{ display: "flex", alignItems: "center" }}>
-          <input
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Пошук..."
-            style={{
-              background: "rgba(0,0,0,0.6)",
-              border: "1px solid #444",
-              borderRadius: "4px",
-              padding: "6px 12px",
-              color: "#fff",
-              fontSize: "14px",
-              outline: "none",
-              width: "180px",
-            }}
-          />
-        </form>
+
+        {/* Пошук — тільки для USER, не для адміна */}
+        {!isAdmin && (
+          <form onSubmit={handleSearch} style={{ display: "flex", alignItems: "center" }}>
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Пошук..."
+              style={{
+                background: "rgba(0,0,0,0.6)",
+                border: "1px solid #444",
+                borderRadius: "4px",
+                padding: "6px 12px",
+                color: "#fff",
+                fontSize: "14px",
+                outline: "none",
+                width: "180px",
+              }}
+            />
+          </form>
+        )}
 
         {session ? (
           <div style={{ position: "relative" }}>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               style={{
-                background: "#E50914", color: "#fff", border: "none",
+                background: isAdmin ? "#b8860b" : "#E50914",
+                color: "#fff", border: "none",
                 borderRadius: "4px", padding: "7px 16px",
                 fontSize: "14px", fontWeight: 700, cursor: "pointer",
               }}
             >
+              {isAdmin && "⚙ "}
               {(session.user as any)?.name || session.user?.email?.split("@")[0]}
             </button>
 
@@ -104,34 +137,58 @@ export default function Header() {
               <div style={{
                 position: "absolute", top: "42px", right: 0,
                 background: "#1f1f1f", border: "1px solid #333",
-                borderRadius: "4px", minWidth: "160px", zIndex: 100,
+                borderRadius: "4px", minWidth: "180px", zIndex: 100,
               }}>
-                {(session.user as any)?.role === "USER" && (
-                  <Link href="/history" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
-                    onClick={() => setMenuOpen(false)}>
-                    Історія
-                  </Link>
+
+                {isAdmin ? (
+                  <>
+                    <div style={{
+                      padding: "8px 16px 6px",
+                      fontSize: "11px", color: "#888",
+                      textTransform: "uppercase", letterSpacing: "1px",
+                      borderBottom: "1px solid #2a2a2a",
+                    }}>
+                      Адміністратор
+                    </div>
+                    <Link href="/admin" style={{ display: "block", padding: "10px 16px", color: "#b8860b", textDecoration: "none", fontSize: "14px", fontWeight: 700 }}
+                      onClick={() => setMenuOpen(false)}>
+                      Адмін панель
+                    </Link>
+                    <Link href="/admin/content" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                      onClick={() => setMenuOpen(false)}>
+                      Керування фільмами
+                    </Link>
+                    <Link href="/admin/users" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                      onClick={() => setMenuOpen(false)}>
+                      Керування користувачами
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/history" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                      onClick={() => setMenuOpen(false)}>
+                      Історія
+                    </Link>
+                    <Link href="/profile" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                      onClick={() => setMenuOpen(false)}>
+                      Профіль
+                    </Link>
+                  </>
                 )}
-                <Link href="/profile" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
-                  onClick={() => setMenuOpen(false)}>
-                  Профіль
-                </Link>
-                {(session.user as any)?.role === "ADMIN" && (
-                  <Link href="/admin" style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
-                    onClick={() => setMenuOpen(false)}>
-                    Адмін панель
-                  </Link>
-                )}
-                <button
-                  onClick={() => { signOut(); setMenuOpen(false); }}
-                  style={{
-                    display: "block", width: "100%", textAlign: "left",
-                    padding: "10px 16px", color: "#E50914", background: "none",
-                    border: "none", fontSize: "14px", cursor: "pointer",
-                  }}
-                >
-                  Вийти
-                </button>
+
+                {/* Вийти — для всіх */}
+                <div style={{ borderTop: "1px solid #2a2a2a", marginTop: "4px" }}>
+                  <button
+                    onClick={() => { signOut(); setMenuOpen(false); }}
+                    style={{
+                      display: "block", width: "100%", textAlign: "left",
+                      padding: "10px 16px", color: "#E50914", background: "none",
+                      border: "none", fontSize: "14px", cursor: "pointer",
+                    }}
+                  >
+                    Вийти
+                  </button>
+                </div>
               </div>
             )}
           </div>

@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import AddToFavorites from "./AddToFavorites";
 import ReviewForm from "./ReviewForm";
 import EpisodePlayer from "./EpisodePlayer";
@@ -33,11 +35,36 @@ export default async function ContentPage({
 
   if (!content) notFound();
 
-  // increment views
   await prisma.content.update({
     where: { id },
     data: { views: { increment: 1 } },
   });
+
+  const session = await getServerSession(authOptions);
+  if (session?.user) {
+  const existing = await prisma.watchHistory.findFirst({
+    where: {
+      userId: (session.user as any).id,
+      contentId: id,
+      episodeId: null,
+    },
+  });
+
+  if (existing) {
+    await prisma.watchHistory.update({
+      where: { id: existing.id },
+      data: { watchedAt: new Date() },
+    });
+  } else {
+    await prisma.watchHistory.create({
+      data: {
+        userId: (session.user as any).id,
+        contentId: id,
+        episodeId: null,
+      },
+    });
+  }
+}
 
   const similar = await prisma.content.findMany({
     where: { type: content.type, id: { not: content.id } },
@@ -101,7 +128,7 @@ export default async function ContentPage({
 
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
             {!isSeries && content.videoUrl && (
-              <a href={`#player`} style={{
+              <a href="#player" style={{
                 display: "flex", alignItems: "center", gap: "8px",
                 background: "#fff", color: "#000", padding: "10px 28px",
                 borderRadius: "4px", fontWeight: 700, fontSize: "16px", textDecoration: "none",
@@ -110,7 +137,7 @@ export default async function ContentPage({
                 Дивитись
               </a>
             )}
-            {isSeries && content.seasons.length > 0 && content.seasons[0].episodes.length > 0 && (
+            {isSeries && content.seasons.length > 0 && (
               <a href="#episodes" style={{
                 display: "flex", alignItems: "center", gap: "8px",
                 background: "#fff", color: "#000", padding: "10px 28px",
@@ -141,16 +168,12 @@ export default async function ContentPage({
             {content.description}
           </p>
 
-          {/* Video player for movies */}
+          {/* Video player for movies/cartoons */}
           {!isSeries && content.videoUrl && (
             <div id="player" style={{ marginBottom: "40px" }}>
               <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px" }}>Дивитись</h2>
               <div style={{ borderRadius: "6px", overflow: "hidden", background: "#000", border: "1px solid rgba(255,255,255,0.07)" }}>
-                <video
-                  controls
-                  style={{ width: "100%", maxHeight: "500px", display: "block" }}
-                  src={content.videoUrl}
-                />
+                <video controls style={{ width: "100%", maxHeight: "500px", display: "block" }} src={content.videoUrl} />
               </div>
             </div>
           )}
@@ -222,7 +245,7 @@ export default async function ContentPage({
         </div>
       </div>
 
-      {/* Similar content */}
+      {/* Similar */}
       {similar.length > 0 && (
         <div style={{ paddingBottom: "60px" }}>
           <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", paddingLeft: "4rem" }}>
@@ -232,11 +255,8 @@ export default async function ContentPage({
             {similar.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
                 <div style={{ width: "160px" }}>
-                  <img
-                    src={item.poster || "/no-image.jpg"}
-                    alt={item.title}
-                    style={{ width: "160px", height: "240px", objectFit: "cover", borderRadius: "4px", display: "block" }}
-                  />
+                  <img src={item.poster || "/no-image.jpg"} alt={item.title}
+                    style={{ width: "160px", height: "240px", objectFit: "cover", borderRadius: "4px", display: "block" }} />
                   <p style={{ color: "#e5e5e5", fontSize: "13px", marginTop: "6px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {item.title}
                   </p>

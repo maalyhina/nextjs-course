@@ -169,6 +169,10 @@ export default function Header() {
                       onClick={() => setMenuOpen(false)}>
                       Профіль
                     </Link>
+                    <Link href="/subscription"style={{ display: "block", padding: "10px 16px", color: "#e5e5e5", textDecoration: "none", fontSize: "14px" }}
+                      onClick={() => setMenuOpen(false)}>
+                        Підписка
+                    </Link>
                   </>
                 )}
 

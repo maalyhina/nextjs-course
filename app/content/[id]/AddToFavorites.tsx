@@ -14,7 +14,6 @@ export default function AddToFavorites({ contentId }: { contentId: string }) {
       setChecking(false);
       return;
     }
-    // перевіряємо чи вже в обраному
     fetch(`/api/favorites?contentId=${contentId}`)
       .then(res => res.json())
       .then(data => {
@@ -56,7 +55,7 @@ export default function AddToFavorites({ contentId }: { contentId: string }) {
         opacity: loading ? 0.7 : 1,
       }}
     >
-      {added ? "❤️ В обраному" : "🤍 Додати до обраного"}
+      {added ? "В обраному" : "Додати до обраного"}
     </button>
   );
 }

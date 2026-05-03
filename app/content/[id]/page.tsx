@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth";
 import AddToFavorites from "./AddToFavorites";
 import ReviewForm from "./ReviewForm";
 import EpisodePlayer from "./EpisodePlayer";
+import VideoPlayer from "./VideoPlayer";
 
 export default async function ContentPage({
   params,
@@ -173,7 +174,7 @@ export default async function ContentPage({
             <div id="player" style={{ marginBottom: "40px" }}>
               <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px" }}>Дивитись</h2>
               <div style={{ borderRadius: "6px", overflow: "hidden", background: "#000", border: "1px solid rgba(255,255,255,0.07)" }}>
-                <video controls style={{ width: "100%", maxHeight: "500px", display: "block" }} src={content.videoUrl} />
+                <VideoPlayer src={content.videoUrl} contentId={id} />
               </div>
             </div>
           )}

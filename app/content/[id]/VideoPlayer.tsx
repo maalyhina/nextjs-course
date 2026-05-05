@@ -19,12 +19,10 @@ export default function VideoPlayer({ src, contentId, episodeId, initialProgress
     const video = videoRef.current;
     if (!video) return;
 
-    // відновити прогрес
     if (initialProgress > 0) {
       video.currentTime = initialProgress;
     }
 
-    // зберігати прогрес кожні 10 секунд
     function startSaving() {
       if (!session?.user) return;
       saveInterval.current = setInterval(async () => {
@@ -59,7 +57,12 @@ export default function VideoPlayer({ src, contentId, episodeId, initialProgress
     <video
       ref={videoRef}
       controls
-      style={{ width: "100%", maxHeight: "500px", display: "block" }}
+      style={{
+        width: "100%",
+        display: "block",
+        aspectRatio: "16/9",
+        background: "#000",
+      }}
       src={src}
     />
   );

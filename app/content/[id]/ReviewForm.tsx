@@ -42,13 +42,17 @@ export default function ReviewForm({ contentId }: { contentId: string }) {
         <select
           value={rating}
           onChange={e => setRating(Number(e.target.value))}
-          style={{ background: "#333", border: "none", color: "#fff", padding: "6px 10px", borderRadius: "4px", fontSize: "14px" }}
+          style={{
+            background: "#333", border: "none", color: "#fff",
+            padding: "6px 10px", borderRadius: "4px", fontSize: "14px",
+          }}
         >
           {[1,2,3,4,5,6,7,8,9,10].map(n => (
             <option key={n} value={n}>{n}/10</option>
           ))}
         </select>
       </div>
+
       <textarea
         value={text}
         onChange={e => setText(e.target.value)}
@@ -59,13 +63,21 @@ export default function ReviewForm({ contentId }: { contentId: string }) {
           background: "#333", border: "none", borderRadius: "4px",
           padding: "12px", color: "#fff", fontSize: "14px",
           resize: "vertical", outline: "none",
+          width: "100%",          
+          boxSizing: "border-box", 
         }}
       />
-      <button type="submit" disabled={loading} style={{
-        background: "#E50914", color: "#fff", border: "none",
-        borderRadius: "4px", padding: "10px 24px", fontSize: "14px",
-        fontWeight: 700, cursor: "pointer", alignSelf: "flex-start",
-      }}>
+
+      <button
+        type="submit"
+        disabled={loading}
+        style={{
+          background: "#E50914", color: "#fff", border: "none",
+          borderRadius: "4px", padding: "12px 24px", fontSize: "14px",
+          fontWeight: 700, cursor: "pointer",
+          width: "100%", 
+        }}
+      >
         {loading ? "Відправка..." : "Залишити відгук"}
       </button>
     </form>

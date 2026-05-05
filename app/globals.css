@@ -12,23 +12,192 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #141414;
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #141414; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* ── АДАПТИВ ── */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 4rem 80px;
 }
 
-@media (max-width: 768px) {
-  main {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+.page-container--sm {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 4rem 80px;
+}
+
+.page-container--md {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 4rem 80px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 48px;
+}
+
+.grid-2-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+/* Герой сторінки фільму */
+.hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 4rem 3.5rem;
+  max-width: 650px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.section-padding {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+/* Профіль header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Підписка блок */
+.subscription-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Схожий контент — горизонтальний скрол */
+.similar-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  scrollbar-width: none;
+}
+
+.similar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── 1024px ── */
+@media (max-width: 1024px) {
+  .page-container,
+  .page-container--sm,
+  .page-container--md {
+    padding: 32px 2rem 60px;
+  }
+
+  .section-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .hero-content {
+    padding: 0 2rem 2.5rem;
+  }
+
+  .similar-scroll {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* ── 900px ── */
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .grid-2-equal {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── 640px ── */
+@media (max-width: 640px) {
+  .page-container,
+  .page-container--sm,
+  .page-container--md {
+    padding: 20px 1rem 50px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .subscription-block {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .subscription-block a,
+  .subscription-block button {
+    width: 100%;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .similar-scroll {
+    gap: 6px;
+  }
+}
+
+/* ── 400px ── */
+@media (max-width: 400px) {
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
   }
 }

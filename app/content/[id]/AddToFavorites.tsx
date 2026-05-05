@@ -49,13 +49,16 @@ export default function AddToFavorites({ contentId }: { contentId: string }) {
         background: added ? "rgba(229,9,20,0.15)" : "rgba(109,109,110,0.7)",
         color: "#fff",
         border: added ? "2px solid #E50914" : "2px solid transparent",
-        padding: "10px 24px", borderRadius: "4px",
-        fontWeight: 700, fontSize: "15px", cursor: loading ? "not-allowed" : "pointer",
+        padding: "10px 20px", borderRadius: "4px",
+        fontWeight: 700, fontSize: "15px",
+        cursor: loading ? "not-allowed" : "pointer",
         transition: "all 0.2s",
         opacity: loading ? 0.7 : 1,
+        whiteSpace: "nowrap",   
+        flexShrink: 0,      
       }}
     >
-      {added ? "В обраному" : "Додати до обраного"}
+      {added ? "❤ В обраному" : "+ Обране"}
     </button>
   );
 }

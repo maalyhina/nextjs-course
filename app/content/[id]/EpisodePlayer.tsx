@@ -29,11 +29,20 @@ export default function EpisodePlayer({ seasons }: { seasons: Season[] }) {
       {/* Video player */}
       {activeEpisode?.videoUrl ? (
         <div style={{ marginBottom: "24px" }}>
-          <div style={{ borderRadius: "6px", overflow: "hidden", background: "#000", border: "1px solid rgba(255,255,255,0.07)", marginBottom: "12px" }}>
+          <div style={{
+            borderRadius: "6px", overflow: "hidden",
+            background: "#000", border: "1px solid rgba(255,255,255,0.07)",
+            marginBottom: "12px",
+          }}>
             <video
               key={activeEpisode.id}
               controls
-              style={{ width: "100%", maxHeight: "500px", display: "block" }}
+              style={{
+                width: "100%",
+                display: "block",
+                aspectRatio: "16/9", // ← замість maxHeight
+                background: "#000",
+              }}
               src={activeEpisode.videoUrl}
             />
           </div>
@@ -44,7 +53,8 @@ export default function EpisodePlayer({ seasons }: { seasons: Season[] }) {
       ) : activeEpisode ? (
         <div style={{
           background: "#1f1f1f", borderRadius: "6px", padding: "24px",
-          textAlign: "center", marginBottom: "24px", border: "1px solid rgba(255,255,255,0.07)",
+          textAlign: "center", marginBottom: "24px",
+          border: "1px solid rgba(255,255,255,0.07)",
         }}>
           <p style={{ color: "#777" }}>Відео для цього епізоду недоступне</p>
         </div>
@@ -82,13 +92,16 @@ export default function EpisodePlayer({ seasons }: { seasons: Season[] }) {
             onClick={() => setActiveEpisode(ep)}
             style={{
               background: activeEpisode?.id === ep.id ? "rgba(229,9,20,0.15)" : "#1f1f1f",
-              border: activeEpisode?.id === ep.id ? "1px solid #E50914" : "1px solid rgba(255,255,255,0.07)",
+              border: activeEpisode?.id === ep.id
+                ? "1px solid #E50914"
+                : "1px solid rgba(255,255,255,0.07)",
               borderRadius: "4px", padding: "12px 16px",
               display: "flex", alignItems: "center", justifyContent: "space-between",
               cursor: "pointer", width: "100%", textAlign: "left",
+              gap: "8px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
               <span style={{
                 background: activeEpisode?.id === ep.id ? "#E50914" : "#333",
                 color: "#fff", fontSize: "12px", fontWeight: 700,
@@ -96,16 +109,22 @@ export default function EpisodePlayer({ seasons }: { seasons: Season[] }) {
               }}>
                 E{ep.number}
               </span>
-              <span style={{ color: "#e5e5e5", fontSize: "14px" }}>{ep.title}</span>
+              {/* overflow hidden щоб довга назва не розтягувала кнопку */}
+              <span style={{
+                color: "#e5e5e5", fontSize: "14px",
+                overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              }}>
+                {ep.title}
+              </span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
               {ep.duration && (
                 <span style={{ color: "#777", fontSize: "13px" }}>{ep.duration} хв</span>
               )}
               {ep.videoUrl ? (
-                <span style={{ color: "#46d369", fontSize: "12px" }}>▶ Доступно</span>
+                <span style={{ color: "#46d369", fontSize: "12px" }}>▶</span>
               ) : (
-                <span style={{ color: "#555", fontSize: "12px" }}>Немає відео</span>
+                <span style={{ color: "#555", fontSize: "12px" }}>—</span>
               )}
             </div>
           </button>

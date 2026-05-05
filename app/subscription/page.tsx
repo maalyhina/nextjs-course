@@ -58,11 +58,16 @@ export default async function SubscriptionPage() {
   const currentPlan = subscription?.plan || "FREE";
 
   return (
-    <div style={{ background: "#141414", minHeight: "100vh", color: "#fff", fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", padding: "60px 4rem" }}>
-      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+    <div style={{ background: "#141414", minHeight: "100vh", color: "#fff", fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+      <div className="page-container--md">
+
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, marginBottom: "12px" }}>Оберіть план</h1>
-          <p style={{ color: "#bcbcbc", fontSize: "16px" }}>Отримайте доступ до тисяч фільмів і серіалів</p>
+          <h1 style={{ fontSize: "clamp(24px, 5vw, 32px)", fontWeight: 900, marginBottom: "12px" }}>
+            Оберіть план
+          </h1>
+          <p style={{ color: "#bcbcbc", fontSize: "16px" }}>
+            Отримайте доступ до тисяч фільмів і серіалів
+          </p>
           {subscription?.expiresAt && (
             <p style={{ color: "#46d369", fontSize: "14px", marginTop: "8px" }}>
               Ваша підписка діє до: {new Date(subscription.expiresAt).toLocaleDateString("uk-UA")}
@@ -70,7 +75,7 @@ export default async function SubscriptionPage() {
           )}
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+        <div className="grid-3 plans-grid">
           {plans.map(plan => (
             <div key={plan.id} style={{
               background: "#1f1f1f", borderRadius: "12px", padding: "32px",
@@ -81,7 +86,7 @@ export default async function SubscriptionPage() {
                 <div style={{
                   position: "absolute", top: "-12px", left: "50%", transform: "translateX(-50%)",
                   background: plan.color, color: "#fff", fontSize: "12px", fontWeight: 700,
-                  padding: "4px 16px", borderRadius: "12px",
+                  padding: "4px 16px", borderRadius: "12px", whiteSpace: "nowrap",
                 }}>
                   Поточний план
                 </div>

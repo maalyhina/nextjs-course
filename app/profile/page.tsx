@@ -5,6 +5,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import ProfileForm from "./ProfileForm";
 
+const PLAN_INFO = {
+  FREE:    { label: "Безкоштовний", color: "#888",  textColor: "#fff" },
+  BASIC:   { label: "Базовий",      color: "#1a5276",  textColor: "#fff" },
+  PREMIUM: { label: "Преміум",      color: "#E50914",  textColor: "#fff" },
+};
+
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
@@ -19,6 +25,7 @@ export default async function ProfilePage() {
           watchHistory: true,
         },
       },
+      subscription: true, 
     },
   });
 
@@ -37,6 +44,10 @@ export default async function ProfilePage() {
     orderBy: { createdAt: "desc" },
     take: 3,
   });
+
+  const plan = (user.subscription?.plan || "FREE") as keyof typeof PLAN_INFO;
+  const planInfo = PLAN_INFO[plan];
+  const expiresAt = user.subscription?.expiresAt;
 
   return (
     <div style={{ background: "#141414", minHeight: "100vh", color: "#fff", fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", padding: "40px 4rem" }}>
@@ -68,7 +79,7 @@ export default async function ProfilePage() {
         </div>
 
         {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", marginBottom: "40px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", marginBottom: "24px" }}>
           {[
             { label: "В обраному", value: user._count.favorites, href: "/favorites" },
             { label: "Відгуків", value: user._count.reviews, href: "#reviews" },
@@ -84,6 +95,60 @@ export default async function ProfilePage() {
               </div>
             </Link>
           ))}
+        </div>
+
+        <div style={{
+          background: "#1f1f1f",
+          borderRadius: "8px",
+          padding: "20px 24px",
+          marginBottom: "24px",
+          border: `1px solid ${planInfo.color}44`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "16px",
+          flexWrap: "wrap",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                <span style={{ color: "#aaa", fontSize: "13px" }}>Поточний план:</span>
+                <span style={{
+                  background: planInfo.color,
+                  color: "#fff", fontSize: "12px", fontWeight: 700,
+                  padding: "2px 10px", borderRadius: "12px",
+                }}>
+                  {planInfo.label}
+                </span>
+              </div>
+
+              {expiresAt ? (
+                <p style={{ color: "#46d369", fontSize: "13px", margin: 0 }}>
+                  ✓ Активна до {new Date(expiresAt).toLocaleDateString("uk-UA")}
+                </p>
+              ) : plan === "FREE" ? (
+                <p style={{ color: "#555", fontSize: "13px", margin: 0 }}>
+                  Безкоштовний доступ — оновіть для повного
+                </p>
+              ) : (
+                <p style={{ color: "#46d369", fontSize: "13px", margin: 0 }}>
+                  ✓ Активна
+                </p>
+              )}
+            </div>
+          </div>
+
+          <Link href="/subscription" style={{
+            background: plan === "FREE" ? "#E50914" : "#2a2a2a",
+            color: "#fff", textDecoration: "none",
+            padding: "9px 22px", borderRadius: "6px",
+            fontSize: "14px", fontWeight: 700,
+            border: plan === "FREE" ? "none" : "1px solid #444",
+            whiteSpace: "nowrap",
+          }}>
+            {plan === "FREE" ? "⚡ Оновити план" : "Змінити план"}
+          </Link>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "40px" }}>

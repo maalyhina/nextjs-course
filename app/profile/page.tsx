@@ -147,7 +147,7 @@ export default async function ProfilePage() {
             border: plan === "FREE" ? "none" : "1px solid #444",
             whiteSpace: "nowrap",
           }}>
-            {plan === "FREE" ? "⚡ Оновити план" : "Змінити план"}
+            {plan === "FREE" ? " Оновити план" : "Змінити план"}
           </Link>
         </div>
 

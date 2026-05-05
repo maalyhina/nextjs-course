@@ -160,13 +160,7 @@ export default async function ProfilePage() {
           }}>
             <div className="sub-block">
               <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                <div style={{
-                  width: "46px", height: "46px", borderRadius: "10px", flexShrink: 0,
-                  background: `${planInfo.color}22`, border: `1px solid ${planInfo.color}55`,
-                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px",
-                }}>
-                  {planInfo.icon}
-                </div>
+
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
                     <span style={{ color: "#aaa", fontSize: "13px" }}>Поточний план:</span>

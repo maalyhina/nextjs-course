@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import AddToFavorites from "./AddToFavorites";
-import ReviewForm from "./ReviewForm";
-import EpisodePlayer from "./EpisodePlayer";
-import VideoPlayer from "./VideoPlayer";
+import AddToFavorites from "../../../components/content/AddToFavorites";
+import ReviewForm from "../../../components/content/ReviewForm";
+import EpisodePlayer from "../../../components/content/EpisodePlayer";
+import VideoPlayer from "../../../components/content/VideoPlayer";
 
 export default async function ContentPage({
   params,

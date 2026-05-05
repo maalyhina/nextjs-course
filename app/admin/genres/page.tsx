@@ -3,8 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import GenreForm from "./GenreForm";
-import DeleteGenreButton from "./DeleteGenreButton";
+import GenreForm from "../../../components/admin/genres/GenreForm";
+import DeleteGenreButton from "../../../components/admin/genres/DeleteGenreButton";
 
 export default async function AdminGenresPage() {
   const session = await getServerSession(authOptions);

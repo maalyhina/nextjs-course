@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "../../../components/admin/content/DeleteButton";
 
 export default async function AdminContentPage() {
   const session = await getServerSession(authOptions);

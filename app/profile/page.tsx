@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import ProfileForm from "./ProfileForm";
+import ProfileForm from "../../components/profile/ProfileForm";
 
 const PLAN_INFO = {
   FREE:    { label: "Безкоштовний", color: "#888",    icon: "🆓" },

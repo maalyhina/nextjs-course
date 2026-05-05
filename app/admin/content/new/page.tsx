@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import ContentForm from "../ContentForm";
+import ContentForm from "../../../../components/admin/content/ContentForm";
 
 export default async function NewContentPage() {
   const session = await getServerSession(authOptions);

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
 interface Props {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: Promise<{ type?: string; page?: string }>;
 }
 
 const typeLabels: Record<string, string> = {
@@ -12,33 +12,77 @@ const typeLabels: Record<string, string> = {
   CARTOON: "Мультики",
 };
 
+const ITEMS_PER_PAGE = 20;
+
 export default async function MoviesPage({ searchParams }: Props) {
-  const { type } = await searchParams;
+  const { type, page } = await searchParams;
+  const currentPage = parseInt(page || "1");
 
   const where: any = {};
   if (type) where.type = type;
 
-  const content = await prisma.content.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-    include: { genres: { include: { genre: true } } },
-  });
+  const [total, content] = await Promise.all([
+    prisma.content.count({ where }),
+    prisma.content.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      include: { genres: { include: { genre: true } } },
+      skip: (currentPage - 1) * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE,
+    }),
+  ]);
 
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+
+  const tabs = [
+    { value: "", label: "Все" },
+    { value: "MOVIE", label: "Фільми" },
+    { value: "SERIES", label: "Серіали" },
+    { value: "ANIME", label: "Аніме" },
+    { value: "CARTOON", label: "Мультики" },
+  ];
 
   const title = type ? typeLabels[type] : "Весь контент";
+
+  function buildUrl(p: number, t?: string) {
+    const params = new URLSearchParams();
+    if (t || type) params.set("type", t ?? type ?? "");
+    if (p > 1) params.set("page", p.toString());
+    const str = params.toString();
+    return `/movies${str ? `?${str}` : ""}`;
+  }
 
   return (
     <div style={{ background: "#141414", minHeight: "100vh", color: "#fff", fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <div style={{ padding: "40px 4rem 60px" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: 900, marginBottom: "24px" }}>{title}</h1>
+
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: "8px", marginBottom: "32px", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", flexWrap: "wrap" }}>
+          {tabs.map(tab => (
+            <Link
+              key={tab.value}
+              href={buildUrl(1, tab.value)}
+              style={{
+                padding: "8px 20px", borderRadius: "4px", fontSize: "14px",
+                fontWeight: 700, textDecoration: "none",
+                background: type === tab.value || (!type && !tab.value) ? "#E50914" : "transparent",
+                color: type === tab.value || (!type && !tab.value) ? "#fff" : "#bcbcbc",
+              }}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </div>
 
         {/* Count */}
         <p style={{ color: "#777", fontSize: "14px", marginBottom: "24px" }}>
-          {content.length} {content.length === 1 ? "результат" : "результатів"}
+          Знайдено: {total} | Сторінка {currentPage} з {totalPages || 1}
         </p>
 
         {/* Grid */}
         {content.length > 0 ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "16px", marginBottom: "40px" }}>
             {content.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ borderRadius: "4px", overflow: "hidden", background: "#1f1f1f" }}>
@@ -66,11 +110,6 @@ export default async function MoviesPage({ searchParams }: Props) {
                         <span style={{ color: "#46d369", fontSize: "12px", fontWeight: 700 }}>⭐ {item.rating.toFixed(1)}</span>
                       )}
                     </div>
-                    {item.genres.length > 0 && (
-                      <p style={{ color: "#555", fontSize: "11px", margin: "4px 0 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {item.genres.map((g: any) => g.genre.name).join(", ")}
-                      </p>
-                    )}
                   </div>
                 </div>
               </Link>
@@ -78,8 +117,62 @@ export default async function MoviesPage({ searchParams }: Props) {
           </div>
         ) : (
           <div style={{ textAlign: "center", padding: "80px 0", color: "#777" }}>
-            <p style={{ fontSize: "18px", marginBottom: "8px" }}>Контенту ще немає</p>
-            <p style={{ fontSize: "14px" }}>Додайте контент через адмін панель</p>
+            <p style={{ fontSize: "18px" }}>Контенту ще немає</p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            {/* Prev */}
+            {currentPage > 1 ? (
+              <Link href={buildUrl(currentPage - 1)} style={{
+                padding: "8px 16px", borderRadius: "4px", textDecoration: "none",
+                background: "#2a2a2a", color: "#fff", fontWeight: 600, fontSize: "14px",
+              }}>
+                ← Назад
+              </Link>
+            ) : (
+              <span style={{ padding: "8px 16px", borderRadius: "4px", background: "#1a1a1a", color: "#555", fontSize: "14px" }}>
+                ← Назад
+              </span>
+            )}
+
+            {/* Page numbers */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2)
+              .reduce<(number | string)[]>((acc, p, idx, arr) => {
+                if (idx > 0 && (p as number) - (arr[idx - 1] as number) > 1) acc.push("...");
+                acc.push(p);
+                return acc;
+              }, [])
+              .map((p, idx) =>
+                p === "..." ? (
+                  <span key={`dots-${idx}`} style={{ color: "#777", padding: "8px 4px" }}>...</span>
+                ) : (
+                  <Link key={p} href={buildUrl(p as number)} style={{
+                    padding: "8px 14px", borderRadius: "4px", textDecoration: "none",
+                    background: currentPage === p ? "#E50914" : "#2a2a2a",
+                    color: "#fff", fontWeight: 600, fontSize: "14px",
+                  }}>
+                    {p}
+                  </Link>
+                )
+              )}
+
+            {/* Next */}
+            {currentPage < totalPages ? (
+              <Link href={buildUrl(currentPage + 1)} style={{
+                padding: "8px 16px", borderRadius: "4px", textDecoration: "none",
+                background: "#2a2a2a", color: "#fff", fontWeight: 600, fontSize: "14px",
+              }}>
+                Вперед →
+              </Link>
+            ) : (
+              <span style={{ padding: "8px 16px", borderRadius: "4px", background: "#1a1a1a", color: "#555", fontSize: "14px" }}>
+                Вперед →
+              </span>
+            )}
           </div>
         )}
       </div>

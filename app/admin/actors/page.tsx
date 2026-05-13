@@ -3,8 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import ActorForm from "../../../components/admin/actors/ActorForm";
-import DeleteActorButton from "../../../components/admin/actors/DeleteActorButton";
+import ActorForm from "@/components/admin/actors/ActorForm";
+import DeleteActorButton from "@/components/admin/actors/DeleteActorButton";
 
 export default async function AdminActorsPage() {
   const session = await getServerSession(authOptions);

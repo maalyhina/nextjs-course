@@ -3,10 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import SeasonForm from "../../../../../components/admin/content/seasons/SeasonForm";
-import EpisodeForm from "../../../../../components/admin/content/seasons/EpisodeForm";
-import DeleteSeasonButton from "../../../../../components/admin/content/seasons/DeleteSeasonButton";
-import DeleteEpisodeButton from "../../../../../components/admin/content/seasons/DeleteEpisodeButton";
+import SeasonForm from "@/components/admin/content/seasons/SeasonForm";
+import EpisodeForm from "@/components/admin/content/seasons/EpisodeForm";
+import DeleteSeasonButton from "@/components/admin/content/seasons/DeleteSeasonButton";
+import DeleteEpisodeButton from "@/components/admin/content/seasons/DeleteEpisodeButton";
 
 export default async function AdminSeasonsPage({
   params,

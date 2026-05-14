@@ -87,22 +87,17 @@ export default async function MoviesPage({ searchParams }: Props) {
             {content.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ borderRadius: "4px", overflow: "hidden", background: "#1f1f1f" }}>
-                  <div style={{ position: "relative" }}>
-                    <Image
-  src={item.poster || "/no-image.jpg"}
-  alt={item.title}
-  width={160}
-  height={240}
-  style={{ objectFit: "cover", display: "block", width: "100%", height: "240px" }}
-/>
-                    <div style={{
-                      position: "absolute", top: "8px", left: "8px",
-                      background: "#E50914", color: "#fff", fontSize: "10px",
-                      fontWeight: 700, padding: "2px 6px", borderRadius: "2px",
-                    }}>
-                      {typeLabels[item.type] || item.type}
-                    </div>
-                  </div>
+                  <div style={{ position: "relative", width: "160px", height: "240px" }}>
+  <Image
+    src={item.poster || "/no-image.jpg"}
+    alt={item.title}
+    fill
+    style={{
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
+</div>
                   <div style={{ padding: "10px" }}>
                     <p style={{ color: "#e5e5e5", fontSize: "13px", fontWeight: 600, margin: "0 0 4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {item.title}

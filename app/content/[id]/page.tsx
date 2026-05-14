@@ -128,8 +128,6 @@ export default async function ContentPage({
           }}>
             {content.description}
           </p>
-
-          {/* hero-actions — flex wrap через CSS клас */}
           <div className="hero-actions">
             {!isSeries && content.videoUrl && (
               <a href="#player" style={{
@@ -165,7 +163,6 @@ export default async function ContentPage({
         </div>
       </div>
 
-      {/* MAIN — grid-2 адаптується до 1 колонки на мобільному */}
       <div className="page-container">
         <div className="grid-2">
           <div>
@@ -218,7 +215,6 @@ export default async function ContentPage({
             </div>
           </div>
 
-          {/* Sidebar — на мобільному іде після основного контенту */}
           <div style={{ paddingTop: "4px", fontSize: "14px", lineHeight: 1.8 }}>
             {[
               { label: "Рік", value: content.year },
@@ -260,13 +256,17 @@ export default async function ContentPage({
           <div className="similar-scroll">
             {similar.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-                <div style={{ width: "160px" }}>
-                  <Image src={item.poster || "/no-image.jpg"} alt={item.title}
-                    style={{ width: "160px", height: "240px", objectFit: "cover", borderRadius: "4px", display: "block" }} />
-                  <p style={{ color: "#e5e5e5", fontSize: "13px", marginTop: "6px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {item.title}
-                  </p>
-                </div>
+                <div style={{ position: "relative", width: "160px", height: "240px" }}>
+  <Image
+    src={item.poster || "/no-image.jpg"}
+    alt={item.title}
+    fill
+    style={{
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
+</div>
               </Link>
             ))}
           </div>

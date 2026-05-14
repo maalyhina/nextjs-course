@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function ContentPage() {
   const content = await prisma.content.findMany({
@@ -17,7 +18,7 @@ export default async function ContentPage() {
         {content.map((item: any) => (
           <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none" }}>
             <div style={{ background: "#1f1f1f", borderRadius: "8px", overflow: "hidden" }}>
-              <img
+              <Image
                 src={item.poster || "/no-image.jpg"}
                 alt={item.title}
                 style={{ width: "100%", aspectRatio: "2/3", objectFit: "cover", display: "block" }}

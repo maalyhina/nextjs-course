@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Props {
   searchParams: Promise<{ type?: string; page?: string }>;
@@ -87,11 +88,13 @@ export default async function MoviesPage({ searchParams }: Props) {
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ borderRadius: "4px", overflow: "hidden", background: "#1f1f1f" }}>
                   <div style={{ position: "relative" }}>
-                    <img
-                      src={item.poster || "/no-image.jpg"}
-                      alt={item.title}
-                      style={{ width: "100%", height: "240px", objectFit: "cover", display: "block" }}
-                    />
+                    <Image
+  src={item.poster || "/no-image.jpg"}
+  alt={item.title}
+  width={160}
+  height={240}
+  style={{ objectFit: "cover", display: "block", width: "100%", height: "240px" }}
+/>
                     <div style={{
                       position: "absolute", top: "8px", left: "8px",
                       background: "#E50914", color: "#fff", fontSize: "10px",

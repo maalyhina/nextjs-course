@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function HistoryPage() {
   const session = await getServerSession(authOptions);
@@ -34,7 +35,7 @@ export default async function HistoryPage() {
                   display: "flex", gap: "16px", alignItems: "center",
                   border: "1px solid rgba(255,255,255,0.07)",
                 }}>
-                  <img
+                  <Image
                     src={item.content.poster || "/no-image.jpg"}
                     alt={item.content.title}
                     style={{ width: "60px", height: "90px", objectFit: "cover", borderRadius: "4px", flexShrink: 0 }}

@@ -7,6 +7,7 @@ import AddToFavorites from "@/components/content/AddToFavorites";
 import ReviewForm from "@/components/content/ReviewForm";
 import EpisodePlayer from "@/components/content/EpisodePlayer";
 import VideoPlayer from "@/components/content/VideoPlayer";
+import Image from "next/image";
 
 export default async function ContentPage({
   params,
@@ -260,7 +261,7 @@ export default async function ContentPage({
             {similar.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
                 <div style={{ width: "160px" }}>
-                  <img src={item.poster || "/no-image.jpg"} alt={item.title}
+                  <Image src={item.poster || "/no-image.jpg"} alt={item.title}
                     style={{ width: "160px", height: "240px", objectFit: "cover", borderRadius: "4px", display: "block" }} />
                   <p style={{ color: "#e5e5e5", fontSize: "13px", marginTop: "6px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {item.title}

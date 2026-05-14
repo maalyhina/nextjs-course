@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function FavoritesPage() {
   const session = await getServerSession(authOptions);
@@ -27,7 +28,7 @@ export default async function FavoritesPage() {
               <Link key={fav.id} href={`/content/${fav.content.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ borderRadius: "4px", overflow: "hidden", background: "#1f1f1f" }}>
                   <div style={{ position: "relative" }}>
-                    <img
+                    <Image
                       src={fav.content.poster || "/no-image.jpg"}
                       alt={fav.content.title}
                       style={{ width: "100%", height: "240px", objectFit: "cover", display: "block" }}

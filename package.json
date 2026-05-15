@@ -10,6 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
+    
   },
   "dependencies": {
     "@babel/runtime": "^7.29.2",

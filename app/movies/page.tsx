@@ -58,23 +58,7 @@ export default async function MoviesPage({ searchParams }: Props) {
       <div style={{ padding: "40px 4rem 60px" }}>
         <h1 style={{ fontSize: "28px", fontWeight: 900, marginBottom: "24px" }}>{title}</h1>
 
-        {/* Tabs */}
-        <div style={{ display: "flex", gap: "8px", marginBottom: "32px", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", flexWrap: "wrap" }}>
-          {tabs.map(tab => (
-            <Link
-              key={tab.value}
-              href={buildUrl(1, tab.value)}
-              style={{
-                padding: "8px 20px", borderRadius: "4px", fontSize: "14px",
-                fontWeight: 700, textDecoration: "none",
-                background: type === tab.value || (!type && !tab.value) ? "#E50914" : "transparent",
-                color: type === tab.value || (!type && !tab.value) ? "#fff" : "#bcbcbc",
-              }}
-            >
-              {tab.label}
-            </Link>
-          ))}
-        </div>
+
 
         {/* Count */}
         <p style={{ color: "#777", fontSize: "14px", marginBottom: "24px" }}>

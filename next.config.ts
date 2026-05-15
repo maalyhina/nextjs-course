@@ -2,12 +2,20 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
+  },
+  async headers() {
+    return [
       {
-        protocol: "https",
-        hostname: "**",
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, stale-while-revalidate=86400",
+          },
+        ],
       },
-    ],
+    ];
   },
 };
 

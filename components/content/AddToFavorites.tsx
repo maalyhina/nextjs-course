@@ -1,10 +1,12 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function AddToFavorites({ contentId }: { contentId: string }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -14,7 +16,7 @@ export default function AddToFavorites({ contentId }: { contentId: string }) {
       setChecking(false);
       return;
     }
-    fetch(`/api/favorites?contentId=${contentId}`)
+    fetch(`/api/favorites?contentId=${contentId}`, { cache: "no-store" })
       .then(res => res.json())
       .then(data => {
         setAdded(data.isFavorite);
@@ -36,6 +38,7 @@ export default function AddToFavorites({ contentId }: { contentId: string }) {
     });
     setAdded(!added);
     setLoading(false);
+    router.refresh();
   }
 
   if (checking) return null;

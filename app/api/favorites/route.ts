@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 import { authOptions } from "@/lib/auth";
 
 export async function GET(req: Request) {
@@ -51,6 +52,9 @@ export async function POST(req: Request) {
     },
   });
 
+  revalidatePath("/favorites");
+  revalidatePath(`/content/${contentId}`);
+
   return NextResponse.json(favorite);
 }
 
@@ -66,6 +70,9 @@ export async function DELETE(req: Request) {
       contentId,
     },
   });
+
+  revalidatePath("/favorites");
+  revalidatePath(`/content/${contentId}`);
 
   return NextResponse.json({ success: true });
 }

@@ -141,8 +141,6 @@ model Review {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, contentId])
 }
 
 model WatchHistory {

@@ -9,6 +9,8 @@ import EpisodePlayer from "@/components/content/EpisodePlayer";
 import VideoPlayer from "@/components/content/VideoPlayer";
 import Image from "next/image";
 
+export const revalidate = 0;
+
 export default async function ContentPage({
   params,
 }: {
@@ -30,7 +32,6 @@ export default async function ContentPage({
       reviews: {
         include: { user: true },
         orderBy: { createdAt: "desc" },
-        take: 10,
       },
     },
   });

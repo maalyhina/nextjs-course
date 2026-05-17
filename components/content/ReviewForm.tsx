@@ -1,19 +1,21 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ReviewForm({ contentId }: { contentId: string }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [text, setText] = useState("");
   const [rating, setRating] = useState(8);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   if (!session) {
-    return (
-      <p style={{ color: "#777", fontSize: "14px" }}>
-        <a href="/login" style={{ color: "#E50914" }}>Увійдіть</a> щоб залишити відгук
+    return (  
+      <p className="text-[#777] text-sm">
+        <a href="/login" className="text-[#E50914] hover:underline">Увійдіть</a> щоб залишити відгук
       </p>
     );
   }
@@ -21,14 +23,22 @@ export default function ReviewForm({ contentId }: { contentId: string }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    await fetch("/api/reviews", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contentId, text, rating }),
-    });
-    setLoading(false);
-    setSuccess(true);
-    setText("");
+
+    try {
+      await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contentId, text, rating }),
+      });
+      setSuccess(true);
+      setText("");
+      router.refresh();
+    } catch (error) {
+      console.error("Помилка при додаванні відгуку:", error);
+      setSuccess(false);
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (success) {

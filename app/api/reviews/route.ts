@@ -1,6 +1,8 @@
-import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
+
+import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 
 export async function POST(req: Request) {
@@ -9,10 +11,8 @@ export async function POST(req: Request) {
 
   const { contentId, text, rating } = await req.json();
 
-  const review = await prisma.review.upsert({
-    where: { userId_contentId: { userId: (session.user as any).id, contentId } },
-    update: { text, rating },
-    create: { userId: (session.user as any).id, contentId, text, rating },
+  const review = await prisma.review.create({
+    data: { userId: (session.user as any).id, contentId, text, rating },
   });
 
   const avg = await prisma.review.aggregate({
@@ -25,6 +25,8 @@ export async function POST(req: Request) {
     where: { id: contentId },
     data: { rating: avg._avg.rating || 0, reviewCount: avg._count },
   });
+
+  revalidatePath(`/content/${contentId}`);
 
   return NextResponse.json(review);
 }

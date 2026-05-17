@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const TYPE_LABEL: Record<string, string> = {
   MOVIE: "Фільм", SERIES: "Серіал", ANIME: "Аніме", CARTOON: "Мультик",
 };

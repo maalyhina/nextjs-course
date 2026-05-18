@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Cinemax",
   description: "Перегляд фільмів, серіалів, аніме та мультиків",
   icons: {
-    icon: "./favicon.ico",
+    icon: "/favicon.ico",
   },
 };
 

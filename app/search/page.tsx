@@ -132,7 +132,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 <div style={{ borderRadius: "4px", overflow: "hidden", background: "#1f1f1f" }}>
                   <div style={{ position: "relative" }}>
                     <img
-                      src={item.poster || "/no-image.jpg"}
+                      src={item.poster}
                       alt={item.title}
                       style={{ width: "100%", height: "240px", objectFit: "cover", display: "block" }}
                     />

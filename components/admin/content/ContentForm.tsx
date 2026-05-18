@@ -156,7 +156,6 @@ export default function ContentForm({ initial, genres, actors }: Props) {
       setError(data.error || "Помилка");
     } else {
       router.push("/admin/content");
-      router.refresh();
     }
   }
 

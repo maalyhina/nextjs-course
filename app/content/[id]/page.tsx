@@ -9,8 +9,6 @@ import EpisodePlayer from "@/components/content/EpisodePlayer";
 import VideoPlayer from "@/components/content/VideoPlayer";
 import Image from "next/image";
 
-export const revalidate = 0;
-
 export default async function ContentPage({
   params,
 }: {
@@ -93,7 +91,7 @@ export default async function ContentPage({
       <div style={{ position: "relative", height: "80vh", overflow: "hidden" }}>
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: `url(${content.backdrop || content.poster || "/no-image.jpg"})`,
+          backgroundImage: `url(${content.backdrop || content.poster})`,
           backgroundSize: "cover", backgroundPosition: "center top",
           transform: "scale(1.04)",
         }} />
@@ -258,16 +256,16 @@ export default async function ContentPage({
             {similar.map((item: any) => (
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
                 <div style={{ position: "relative", width: "160px", height: "240px" }}>
-  <Image
-    src={item.poster || "/no-image.jpg"}
-    alt={item.title}
-    fill
-    style={{
-      objectFit: "cover",
-      borderRadius: "4px"
-    }}
-  />
-</div>
+                  <Image
+                    src={item.poster}
+                    alt={item.title}
+                    fill
+                    style={{
+                      objectFit: "cover",
+                      borderRadius: "4px"
+                    }}
+                  />
+                </div>
               </Link>
             ))}
           </div>

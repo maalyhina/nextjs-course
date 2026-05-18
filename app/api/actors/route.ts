@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const actors = await prisma.actor.findMany({ orderBy: { name: "asc" } });
@@ -15,5 +16,9 @@ export async function POST(req: Request) {
   }
   const { name, photo } = await req.json();
   const actor = await prisma.actor.create({ data: { name, photo } });
+
+  revalidatePath("/admin/actors");
+  revalidatePath("/admin/content/new");
+
   return NextResponse.json(actor);
 }

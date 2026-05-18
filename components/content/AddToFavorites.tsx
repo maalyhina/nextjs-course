@@ -27,7 +27,7 @@ export default function AddToFavorites({ contentId }: { contentId: string }) {
 
   async function toggle() {
     if (!session) {
-      window.location.href = "/login";
+      window.location.href = `/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
     setLoading(true);

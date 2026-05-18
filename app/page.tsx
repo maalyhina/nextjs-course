@@ -43,7 +43,7 @@ function ContentCard({ item }: { item: any }) {
       <div className="content-card">
         <div style={{ position: "relative" }}>
           <img
-            src={item.poster || "/no-image.jpg"}
+            src={item.poster}
             alt={item.title}
             className="content-card-img"
           />
@@ -207,7 +207,7 @@ export default async function Home() {
           <div className="hero-wrap">
             <div style={{
               position: "absolute", inset: 0,
-              backgroundImage: `url(${featured.backdrop || featured.poster || "/no-image.jpg"})`,
+              backgroundImage: `url(${featured.backdrop || featured.poster})`,
               backgroundSize: "cover", backgroundPosition: "center top",
               transform: "scale(1.04)",
             }} />

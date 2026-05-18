@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
@@ -10,6 +11,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   }
 
   const { id } = await params;
+
+  const existingContent = await prisma.content.findUnique({ where: { id } });
+  if (!existingContent) {
+    return NextResponse.json({ error: "Content not found" }, { status: 404 });
+  }
+
   const { title, description, poster, backdrop, trailerUrl, videoUrl, type, year, duration, country, genreIds, actorIds, seasons } = await req.json();
 
   await prisma.contentGenre.deleteMany({ where: { contentId: id } });
@@ -52,6 +59,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     },
   });
 
+  revalidatePath("/admin/content");
+  revalidatePath(`/content/${id}`);
+  revalidatePath("/");
+
   return NextResponse.json(content);
 }
 
@@ -62,7 +73,28 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   }
 
   const { id } = await params;
+  
+  const existingContent = await prisma.content.findUnique({ where: { id } });
+  if (!existingContent) {
+    return NextResponse.json({ error: "Content not found" }, { status: 404 });
+  }
+
+  await prisma.contentGenre.deleteMany({ where: { contentId: id } });
+  await prisma.contentActor.deleteMany({ where: { contentId: id } });
+  
+  const existingSeasons = await prisma.season.findMany({ where: { contentId: id } });
+  for (const season of existingSeasons) {
+    await prisma.episode.deleteMany({ where: { seasonId: season.id } });
+  }
+  await prisma.season.deleteMany({ where: { contentId: id } });
+  await prisma.favorite.deleteMany({ where: { contentId: id } });
+  await prisma.review.deleteMany({ where: { contentId: id } });
+  await prisma.watchHistory.deleteMany({ where: { contentId: id } });
+
   await prisma.content.delete({ where: { id } });
+
+  revalidatePath("/admin/content");
+  revalidatePath("/");
 
   return NextResponse.json({ success: true });
 }

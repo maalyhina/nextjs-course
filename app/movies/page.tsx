@@ -58,8 +58,6 @@ export default async function MoviesPage({ searchParams }: Props) {
       <div style={{ padding: "40px 4rem 60px" }}>
         <h1 style={{ fontSize: "28px", fontWeight: 900, marginBottom: "24px" }}>{title}</h1>
 
-
-
         {/* Count */}
         <p style={{ color: "#777", fontSize: "14px", marginBottom: "24px" }}>
           Знайдено: {total} | Сторінка {currentPage} з {totalPages || 1}
@@ -72,16 +70,16 @@ export default async function MoviesPage({ searchParams }: Props) {
               <Link key={item.id} href={`/content/${item.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ borderRadius: "4px", overflow: "hidden", background: "#1f1f1f" }}>
                   <div style={{ position: "relative", width: "160px", height: "240px" }}>
-  <Image
-    src={item.poster || "/no-image.jpg"}
-    alt={item.title}
-    fill
-    style={{
-      objectFit: "cover",
-      borderRadius: "4px"
-    }}
-  />
-</div>
+                    <Image
+                      src={item.poster}
+                      alt={item.title}
+                      fill
+                      style={{
+                        objectFit: "cover",
+                        borderRadius: "4px"
+                      }}
+                    />
+                  </div>
                   <div style={{ padding: "10px" }}>
                     <p style={{ color: "#e5e5e5", fontSize: "13px", fontWeight: 600, margin: "0 0 4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {item.title}

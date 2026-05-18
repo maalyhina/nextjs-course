@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const genres = await prisma.genre.findMany({ orderBy: { name: "asc" } });
@@ -15,5 +16,9 @@ export async function POST(req: Request) {
   }
   const { name } = await req.json();
   const genre = await prisma.genre.create({ data: { name } });
+
+  revalidatePath("/admin/genres");
+  revalidatePath("/admin/content/new");
+
   return NextResponse.json(genre);
 }

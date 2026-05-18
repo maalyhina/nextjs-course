@@ -58,14 +58,14 @@ export default async function FavoritesPage() {
                     <div style={{ position: "relative" }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <div style={{ position: "relative", width: "100%", height: "240px" }}>
-  <Image
-    src={fav.content.poster || "/no-image.jpg"}
-    alt={fav.content.title}
-    fill
-    sizes="(max-width: 768px) 130px, 160px"
-    style={{ objectFit: "cover" }}
-  />
-</div>
+                        <Image
+                          src={fav.content.poster}
+                          alt={fav.content.title}
+                          fill
+                          sizes="(max-width: 768px) 130px, 160px"
+                          style={{ objectFit: "cover" }}
+                        />
+                      </div>
                       <div style={{
                         position: "absolute", top: "8px", left: "8px",
                         background: "#E50914", color: "#fff", fontSize: "10px",

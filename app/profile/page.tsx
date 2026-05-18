@@ -1,9 +1,9 @@
+import ProfileForm from "@/components/profile/ProfileForm";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import ProfileForm from "@/components/profile/ProfileForm";
+import { redirect } from "next/navigation";
 
 const PLAN_INFO = {
   FREE:    { label: "Безкоштовний", color: "#888",    icon: "🆓" },
@@ -93,11 +93,11 @@ export default async function ProfilePage() {
           .sub-block a {
             text-align: center;
           }
-            .stats-grid,
-.profile-grid,
-.sub-block-wrap {
-  width: 100%;
-}
+          .stats-grid,
+          .profile-grid,
+          .sub-block-wrap {
+            width: 100%;
+          }
         }
       `}</style>
 
@@ -216,7 +216,7 @@ export default async function ProfilePage() {
                   {recentFavorites.map((fav: any) => (
                     <Link key={fav.id} href={`/content/${fav.content.id}`} style={{ textDecoration: "none" }}>
                       <img
-                        src={fav.content.poster || "/no-image.jpg"}
+                        src={fav.content.poster}
                         alt={fav.content.title}
                         style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "4px", display: "block" }}
                       />

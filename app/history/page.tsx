@@ -1,9 +1,9 @@
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function HistoryPage() {
   const session = await getServerSession(authOptions);
@@ -55,14 +55,14 @@ export default async function HistoryPage() {
                   <div className="history-item">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <div style={{ position: "relative", width: "60px", height: "90px", flexShrink: 0 }}>
-  <Image
-    src={item.content.poster || "/no-image.jpg"}
-    alt={item.content.title}
-    fill
-    sizes="60px"
-    style={{ objectFit: "cover", borderRadius: "4px" }}
-  />
-</div>
+                      <Image
+                        src={item.content.poster}
+                        alt={item.content.title}
+                        fill
+                        sizes="60px"
+                        style={{ objectFit: "cover", borderRadius: "4px" }}
+                      />
+                    </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ color: "#e5e5e5", fontSize: "16px", fontWeight: 600, margin: "0 0 4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {item.content.title}

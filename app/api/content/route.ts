@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -59,6 +60,9 @@ export async function POST(req: Request) {
       },
     },
   });
+
+  revalidatePath("/admin/content");
+  revalidatePath("/");
 
   return NextResponse.json(content);
 }

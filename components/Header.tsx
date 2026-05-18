@@ -133,11 +133,19 @@ export default function Header() {
                       </>
                     )}
                     <div style={{ borderTop: "1px solid #2a2a2a", marginTop: "4px" }}>
-                      <button onClick={() => { signOut(); setMenuOpen(false); }} style={{
-                        display: "block", width: "100%", textAlign: "left",
-                        padding: "10px 16px", color: "#E50914", background: "none",
-                        border: "none", fontSize: "14px", cursor: "pointer",
-                      }}>Вийти</button>
+                      <button 
+                        onClick={async () => {
+                          await signOut({ redirect: false });
+                          window.location.href = "/";
+                        }} 
+                        style={{
+                          display: "block", width: "100%", textAlign: "left",
+                          padding: "10px 16px", color: "#E50914", background: "none",
+                          border: "none", fontSize: "14px", cursor: "pointer",
+                        }}
+                      >
+                          Вийти
+                      </button>
                     </div>
                   </div>
                 )}
@@ -206,7 +214,11 @@ export default function Header() {
                   <Link href="/subscription" onClick={() => setMobileOpen(false)} style={{ color: "#e5e5e5", textDecoration: "none", fontSize: "17px", fontWeight: 600, padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "block" }}>Підписка</Link>
                 </>
               )}
-              <button onClick={() => { signOut(); setMobileOpen(false); }} style={{
+              <button onClick={async () => {
+                          await signOut({ redirect: false });
+                          window.location.href = "/";
+                        }} 
+                      style={{
                 background: "#E50914", color: "#fff", border: "none",
                 padding: "14px", borderRadius: "4px", fontWeight: 700,
                 fontSize: "16px", cursor: "pointer", marginTop: "16px",

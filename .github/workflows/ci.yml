@@ -5,8 +5,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
-      NEXTAUTH_SECRET: "1234567890"
+      DATABASE_URL: "postgres://ddd27762204c72cf3b8634281efd4e70601505bebebbd5876a29b208cb9a2d28:sk_WscYe35bs0QdT62XK9X2r@db.prisma.io:5432/postgres?sslmode=require"
+      NEXTAUTH_SECRET: "7f0cb9cccdad3e10516079d77fb21ebccdb6d6a66b49f4d774f9052a6ffb2197"
       NEXTAUTH_URL: "http://localhost:3000"
     steps:
       - uses: actions/checkout@v4

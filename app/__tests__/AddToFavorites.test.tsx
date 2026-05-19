@@ -1,6 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import AddToFavorites from '../../components/content/AddToFavorites'; 
+import AddToFavorites from '@/components/content/AddToFavorites'; 
 import { useSession } from 'next-auth/react';
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    refresh: jest.fn(),
+    back: jest.fn(),
+  }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 jest.mock('next-auth/react');
 

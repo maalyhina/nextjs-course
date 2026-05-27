@@ -79,6 +79,15 @@ export default async function ContentPage({
     : null;
   const genres = content.genres.map((g: any) => g.genre.name).join(", ");
 
+  const watchHistory = session?.user ? await prisma.watchHistory.findFirst({
+  where: {
+    userId: (session.user as any).id,
+    contentId: id,
+    episodeId: null,
+  }
+}) : null;
+
+
   const typeLabel =
     content.type === "MOVIE" ? "Фільм" :
     content.type === "SERIES" ? "Серіал" :
@@ -174,7 +183,7 @@ export default async function ContentPage({
               <div id="player" style={{ marginBottom: "40px" }}>
                 <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px" }}>Дивитись</h2>
                 <div style={{ borderRadius: "6px", overflow: "hidden", background: "#000", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <VideoPlayer src={content.videoUrl} contentId={id} />
+                  <VideoPlayer src={content.videoUrl} contentId={id} initialProgress={watchHistory?.progress || 0}/>
                 </div>
               </div>
             )}

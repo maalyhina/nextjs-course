@@ -19,9 +19,13 @@ export default function VideoPlayer({ src, contentId, episodeId, initialProgress
     const video = videoRef.current;
     if (!video) return;
 
+    function handleLoaded() {
     if (initialProgress > 0) {
-      video.currentTime = initialProgress;
+      video!.currentTime = initialProgress;
     }
+  }
+
+  video.addEventListener("loadedmetadata", handleLoaded);
 
     function startSaving() {
       if (!session?.user) return;
@@ -47,6 +51,7 @@ export default function VideoPlayer({ src, contentId, episodeId, initialProgress
 
     return () => {
       stopSaving();
+      video.removeEventListener("loadedmetadata", handleLoaded);
       video.removeEventListener("play", startSaving);
       video.removeEventListener("pause", stopSaving);
       video.removeEventListener("ended", stopSaving);
